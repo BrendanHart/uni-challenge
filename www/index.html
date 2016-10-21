@@ -18,21 +18,22 @@
             }, false);
 
         function onMapReady() {
-
-
             navigator.geolocation.getCurrentPosition(function(pos) {
-            var POS = new plugin.google.maps.LatLng(pos.latitude, pos.longitude);
-            alert(POS);
-            map.animateCamera({
-                'target': POS,
-                'tilt': 60,
-                'zoom': 18,
-                'bearing': 0,
-                'duration': 5000 // = 5 sec.
-                }, function() {
-                    alert("The animation is done");
-                }
-            );
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+
+                var POS = new plugin.google.maps.LatLng(lat, lng);
+                map.animateCamera({
+                    'target': POS,
+                    'tilt': 60,
+                    'zoom': 18,
+                    'bearing': 0,
+                    'duration': 5000 // = 5 sec.
+                    }, function() {
+                        alert("The animation is done");
+                    }
+                );
+
             });
         }
 
