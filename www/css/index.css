@@ -23,7 +23,6 @@
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#E4E4E4;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
@@ -32,15 +31,6 @@ body {
     padding:0px;
     width:100%;
 }
-
-/* Portrait layout (default) */
-.app {
-    position:absolute;             /* position in the center of the screen */
-    text-align:center;
-    width:100%;
-                                   /* offset horizontal: half of text area width */
-}
-
 
 h1 {
     font-size:24px;
@@ -96,37 +86,8 @@ h1 {
     width:100%;
 }
 
-.connections .connection-title {
-    text-align:left;
-    border-bottom: 1px solid #DADADA;
-    border-top: 1px solid #DADADA;
-    padding:10px 0px;
-}
-
-.connections .connection-list .connection {
-    line-height:50px;
-    padding:5px 10px;
-    border-bottom: 1px solid #D0D0D0;
-    border-top: 1px solid #D0D0D0;
-    font-size:1.4em;
-}
-
-.connections .connection-list .connection img {
-    width:50px;
-    height:50px;
-    border-radius:50%;
-}
-
-.connections .connection-list .connection:hover {
-    opacity(0.8);
-}
-
 .present {
     background-color:red;
-}
-
-.hidden {
-    opacity:0;
 }
 
 .notifications {
@@ -137,9 +98,22 @@ h1 {
     text-align:center;
     z-index: 1;
     position:fixed;
-    top:20px;
-    right:20px;
+    top:10px;
+    right:10px;
     width:45px;
     border-radius:50%;
     background-color:#cecece;
+    animation: growshrink 1s forwards;
+}
+
+@keyframes growshrink {
+    0% {
+        transform:scale(1);
+    }
+    50% {
+        transform:scale(1.2);
+    }
+    100% {
+        transform:scale(1);
+    }
 }

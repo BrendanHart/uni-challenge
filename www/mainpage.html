@@ -10,11 +10,18 @@
         <script type="text/javascript" src="cordova.js"></script>
 
 <script>
+
+setInterval(function() {
+        var x = document.getElementsByClassName("notifications")[0];
+        x.innerHTML = String(parseInt(x.innerHTML) + 1);
+        x.style.background = "#ff2222";
+        }, 5000);
+
 var tokens = ["OGUyNGJiN2QtNGI3Ny00YzY1LWE0YjQtODQxZDc0OGQ4Yjc5ZTNiZjY4YjEtYTEx", "Zjk2OTk2MWYtMDg1ZC00NGI3LWIyMTAtMzFkZTQ2NDNkMzA5OWExZDdlMjUtNGUw", "NTYxZTljYzEtMzk2NC00YTgwLThkZWItM2FhZmQ0NzY0NzAxYWExNWEyOTAtNWU1"];
 var sender = 0;
 
 function sendmsg(){
-    document.getElementById("foundPerson").classList.add("hidden");
+    div.style.opacity="0";
 	xmlhttp = new XMLHttpRequest();
 	/*xmlhttp.onreadystatechange = function () {
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
@@ -24,7 +31,7 @@ function sendmsg(){
 	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/messages', true);
 	xmlhttp.setRequestHeader('Content-Type', 'application/json');
 	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
-	xmlhttp.send('{"toPersonEmail" : "' + document.getElementById("email").value + '" , "text" : "' + document.getElementById("text").value + '"}');
+	xmlhttp.send('{"toPersonEmail" : "' + document.getElementById("email").value + '" , "text" : "' + document.getElementById("txt").value + '"}');
 }
 
 function people(){
@@ -99,16 +106,17 @@ function invite(){
                 map.addEventListener(plugin.google.maps.event.MAP_READY, onMapReady);
             }, false);
 
-        function displayPerson(image, name) {
+        function displayPerson(email, image, nameNew, interest) {
+            var maps = document.getElementById("map_canvas");
+            maps.style.height="500px";
             var div = document.getElementById("foundPerson");
-            var img = div.getElementById("img");
-            var span = div.getElementById("span");
+            div.style.opacity="1";
+            var img = document.getElementById("foundPersoni");
+            var name = document.getElementById("foundPersonn");
+            var inter = document.getElementById("foundPersonin");
             img.src = image;
-            span.innerHTML=name;
-            div.height="50px"
-            div.appendChild(img);
-            div.className += "foundPerson";
-            document.appendChild(div);
+            name.innerHTML = nameNew;
+            inter.innerHTML = "Interested in " + interest;
         }
 
         function onMapReady() {
@@ -117,7 +125,7 @@ function invite(){
                 map.animateCamera({
                     'target': POS,
                     'tilt': 60,
-                    'zoom': 18,
+                    'zoom': 16,
                     'bearing': 0,
                     'duration': 5000 // = 5 sec.
                     }, function() {
@@ -126,18 +134,29 @@ function invite(){
 
                 map.addCircle(
                    {'center': POS,
-                    'radius': 300,
+                    'radius': 200,
                     'strokeColor' : '#AA00FF',
                     'strokeWidth': 5,
                     'fillColor' : '#efefef'
                     });
 
+                for(var i = 0; i < 30; i++) {
+                    map.addMarker(
+                            {'position':{ 'lat':52.4507168 + (Math.random() * (0.0018 - (-0.0018)) + (-0.0018)), 'lng':-1.9327022 + (Math.random() * (0.0028 - (-0.0028)) + (-0.0028)) },
+                         'title': "John Smith",
+                         }, function(marker) {
+                            marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, function() {
+                                displayPerson("bxh538@student.bham.ac.uk","img/profiles/johnsmith.jpg","John Smith","Computer Science");
+                                });
+                         });
+                }
+
                 map.addMarker(
-                    {'position': POS,
+                        {'position':{ 'lat':52.4507168, 'lng':-1.9328022},
                      'title': "John Smith",
                      }, function(marker) {
                         marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, function() {
-                            displayPerson("img/profiles/johnsmith.jpg","John Smith");
+                            displayPerson("bxh538@student.bham.ac.uk","img/profiles/johnsmith.jpg","John Smith","Computer Science");
                             });
                      });
 
@@ -154,7 +173,7 @@ function invite(){
     </head>
     <body>
             <!-- The map -->
-        <div style="width:100%;height:600px" id="map_canvas"></div>
+            <div style="width:100%;height:600px;position:absolute;" id="map_canvas"></div>
 
             <!-- Nearby
             <section class="connections">
@@ -169,11 +188,11 @@ function invite(){
 
         <div id="foundPerson">
             <div style="display:inline-block;width:25%;text-align:center"><img src="img/profiles/johnsmith.jpg" style="width:70px;top:-25px;left:30px;;position:absolute;height:70px;border-radius:50%;" id="foundPersoni"/></div>
-            <div style="display:inline-block;width:74%;"><h2 id="foundPersonn" style="margin-left:10px;">John Smith</h2><p id="foundpersonin" style="margin-left:10px;">Interested in Computer Science</p></div>
-            <div style="text-align:center;margin:10px;"><input type="text" id="text" placeholder="Message..." /><input type="hidden" id="email" value="bxh538@student.bham.ac.uk" /><button style="border-radius:2px;background-color:#ededed;border:0;" onclick="sendmsg()">Send</button></div>
+            <div style="display:inline-block;width:74%;"><h2 id="foundPersonn" style="margin-left:10px;">John Smith</h2><p id="foundPersonin" style="margin-left:10px;">Interested in Computer Science</p></div>
+            <div style="text-align:center;height:35px;z-index:4;"><input type="text" id="message" style="z-index:5;padding:10px;font-size:1.3em;"/><button style="z-index:5;border-radius:2px;background-color:#ededed;font-size:1.3em;padding:10px;border:0;">Send</button></div>
         </div>
             
-        <div class="notifications">
+        <div class="notifications" id="noti">
             0 
         </div>
 
