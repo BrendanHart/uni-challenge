@@ -17,12 +17,21 @@
                 map.addEventListener(plugin.google.maps.event.MAP_READY, onMapReady);
             }, false);
 
-        function onMapReady() {
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                var lat = pos.coords.latitude;
-                var lng = pos.coords.longitude;
+        function displayPerson(image, name) {
+            var div = document.getElementById("foundPerson");
+            var img = div.getElementById("img");
+            var span = div.getElementById("span");
+            img.src = image;
+            span.innerHTML=name;
+            div.height="50px"
+            div.appendChild(img);
+            div.className += "foundPerson";
+            document.appendChild(div);
+        }
 
-                var POS = new plugin.google.maps.LatLng(lat, lng);
+        function onMapReady() {
+
+                var POS = new plugin.google.maps.LatLng(52.4508168,-1.9327022);
                 map.animateCamera({
                     'target': POS,
                     'tilt': 60,
@@ -30,11 +39,28 @@
                     'bearing': 0,
                     'duration': 5000 // = 5 sec.
                     }, function() {
-                        alert("The animation is done");
                     }
                 );
 
-            });
+                map.addCircle(
+                   {'center': POS,
+                    'radius': 300,
+                    'strokeColor' : '#AA00FF',
+                    'strokeWidth': 5,
+                    'fillColor' : '#efefef'
+                    });
+
+                map.addMarker(
+                    {'position': POS,
+                     'title': "John Smith",
+                     }, function(marker) {
+                        marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, function() {
+                            displayPerson("img/profiles/johnsmith.jpg","John Smith");
+                            });
+                     });
+
+
+
         }
 
         function onBtnClicked() {
@@ -46,7 +72,7 @@
     </head>
     <body>
             <!-- The map -->
-        <div style="width:100%;height:400px" id="map_canvas"></div>
+        <div style="width:100%;height:600px" id="map_canvas"></div>
 
             <!-- Nearby
             <section class="connections">
@@ -58,7 +84,16 @@
                     <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
                 </div>
             </section>-->
+
+        <div id="foundPerson">
+            <div style="display:inline-block;width:25%;text-align:center"><img src="img/profiles/johnsmith.jpg" style="width:70px;top:-25px;left:30px;;position:absolute;height:70px;border-radius:50%;" id="foundPersoni"/></div>
+            <div style="display:inline-block;width:74%;"><h2 id="foundPersonn" style="margin-left:10px;">John Smith</h2><p id="foundpersonin" style="margin-left:10px;">Interested in Computer Science</p></div>
+            <div style="text-align:center;margin-top:10px;"><input type="text" placeholder="Message..." /><button style="border-radius:2px;background-color:#f0f0f0;border:0;">Send</button></div>
+        </div>
             
+        <div class="notifications">
+            0 
+        </div>
 
         <nav role="navigation">
             <div id="menuToggle">
@@ -69,8 +104,8 @@
                 <span></span>
 
                 <ul id="menu">
-                    <a href="#"><li>Home</li></a>
-                    <a href="#"><li>About</li></a>
+                    <a href="#"><li>Profile</li></a>
+                    <a href="#"><li>Settings</li></a>
                     <a href="#"><li>Info</li></a>
                     <a href="#"><li>Contact</li></a>
                 </ul>
