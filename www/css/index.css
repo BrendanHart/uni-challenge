@@ -30,32 +30,17 @@ body {
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
     width:100%;
 }
 
 /* Portrait layout (default) */
 .app {
     position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
     text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+    width:100%;
                                    /* offset horizontal: half of text area width */
 }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
-}
 
 h1 {
     font-size:24px;
@@ -101,3 +86,38 @@ h1 {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
 }
+
+
+.connections {
+    text-align:left;
+    border-radius:8px;
+    background-color:rgba(255,255,255,0.2);
+    margin:0 auto;
+    width:100%;
+}
+
+.connections .connection-title {
+    text-align:left;
+    border-bottom: 1px solid #DADADA;
+    border-top: 1px solid #DADADA;
+    padding:10px 0px;
+}
+
+.connections .connection-list .connection {
+    line-height:50px;
+    padding:5px 10px;
+    border-bottom: 1px solid #D0D0D0;
+    border-top: 1px solid #D0D0D0;
+    font-size:1.4em;
+}
+
+.connections .connection-list .connection img {
+    width:50px;
+    height:50px;
+    border-radius:50%;
+}
+
+.connections .connection-list .connection:hover {
+    opacity(0.8);
+}
+

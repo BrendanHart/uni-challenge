@@ -1,20 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/nav.css">
         <title>Hello World</title>
 
+        <script type="text/javascript" src="cordova.js"></script>
+
+        <script type="text/javascript">
+        var map;
+        document.addEventListener("deviceready", function() {
+                var div = document.getElementById("map_canvas");
+                map = plugin.google.maps.Map.getMap(div);
+                map.addEventListener(plugin.google.maps.event.MAP_READY, onMapReady);
+            }, false);
+
+        function onMapReady() {
+
+
+            navigator.geolocation.getCurrentPosition(function(pos) {
+            var POS = new plugin.google.maps.LatLng(pos.latitude, pos.longitude);
+            map.animateCamera({
+                'target': POS,
+                'tilt': 60,
+                'zoom': 18,
+                'bearing': 0,
+                'duration': 5000 // = 5 sec.
+                }, function() {
+                    alert("The animation is done");
+                }
+            );
+            });
+        }
+
+        function onBtnClicked() {
+            map.showDialog();
+        }
+        </script>
+
 
     </head>
     <body>
-        <div class="app">
+            <!-- The map -->
+        <div style="width:100%;height:400px" id="map_canvas"></div>
 
-        </div>
+            <!-- Nearby
+            <section class="connections">
+                <div class="connection-title"><h1>Nearby</h1></div>
+                <div class="connection-list">
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                </div>
+            </section>-->
+            
 
         <nav role="navigation">
             <div id="menuToggle">
@@ -33,8 +75,5 @@
             </div>
         </nav>
 
-        <script type="text/javascript" src="js/nav.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/jquery.js"></script>
     </body>
 </html>

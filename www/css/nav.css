@@ -1,3 +1,8 @@
+nav {
+    position:fixed;
+    top:0px;
+    left:0px;
+}
 #menuToggle {
     display: block;
     position: relative;
@@ -116,4 +121,4 @@
 #menuToggle input:checked ~ ul {
     transform: scale(1.0, 1.0);
     opacity: 1;
-}
+
