@@ -6,20 +6,15 @@ body{
 	vertical-align: center;
 }
 
-.title{
-
-	font-size: 40px;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	text-shadow: 0px 2px 1px DarkGray;
-}
-
 .field{
 
-	margin-top: 20px;
-	margin-bottom: 5px;
+	width: 260px;
+	margin-top: 30px;
+	margin-bottom: 15px;
 	padding: 10px;
 	outline: 2px black solid;
 	color: gray;
+	font-size:20px;
 }
 
 .field:focus{
@@ -27,18 +22,39 @@ body{
 	color: black;
 }
 
-.button {
-margin: 20px;
+.button{
+
+	padding: 0px;
+	border: none;
+	background:none;
+}
+
+#login {
+
+	width: 220px;
+	margin-top: 40px;
+	margin-bottom: 10px;
   font-family: Arial;
   color: #fff7ff;
   font-size: 25px;
   padding: 5px;
   background: #5ca8db;
-  border: solid #8e89d9 4px;
+  border: solid #8e89d9 2px;
   text-decoration: none;
 }
 
-.button:active {
+.button:active{
+
+	outline: none;
+  transform: translateY(4px);
+}
+
+.button:focus{
+
+	outline: none;
+}
+
+#login:active {
   background-color: LightBlue;
   transform: translateY(4px);
 }
