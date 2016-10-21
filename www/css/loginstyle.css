@@ -1,0 +1,61 @@
+body{
+
+	
+	padding: 20px;
+	text-align: center;
+	vertical-align: center;
+}
+
+.field{
+
+	width: 260px;
+	margin-top: 30px;
+	margin-bottom: 15px;
+	padding: 10px;
+	outline: 2px black solid;
+	color: gray;
+	font-size:20px;
+}
+
+.field:focus{
+
+	color: black;
+}
+
+.button{
+
+	padding: 0px;
+	border: none;
+	background:none;
+}
+
+#login {
+
+	width: 220px;
+	margin-top: 40px;
+	margin-bottom: 10px;
+  font-family: Arial;
+  color: #fff7ff;
+  font-size: 25px;
+  padding: 5px;
+  background: #5ca8db;
+  border: solid #8e89d9 2px;
+  text-decoration: none;
+}
+
+.button:active{
+
+	outline: none;
+  transform: translateY(4px);
+}
+
+.button:focus{
+
+	outline: none;
+}
+
+#login:active {
+  background-color: LightBlue;
+  transform: translateY(4px);
+}
+

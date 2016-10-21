@@ -1,0 +1,99 @@
+<html>
+<head>
+
+<script>
+var tokens = ["OGUyNGJiN2QtNGI3Ny00YzY1LWE0YjQtODQxZDc0OGQ4Yjc5ZTNiZjY4YjEtYTEx", "Zjk2OTk2MWYtMDg1ZC00NGI3LWIyMTAtMzFkZTQ2NDNkMzA5OWExZDdlMjUtNGUw", "NTYxZTljYzEtMzk2NC00YTgwLThkZWItM2FhZmQ0NzY0NzAxYWExNWEyOTAtNWU1"];
+var sender = 0;
+
+function sendmsg(){
+	xmlhttp = new XMLHttpRequest();
+	/*xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+		
+		}
+	}*/
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/messages', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"toPersonEmail" : "' + document.getElementById("email").value + '" , "text" : "' + document.getElementById("text").value + '"}');
+}
+
+function people(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			var resp = JSON.parse(xmlhttp.responseText);
+			//TO DO: do something with resp (show)
+		}
+	}
+	xmlhttp.open('GET','https://api.ciscospark.com/v1/people', true);
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"max" : 10}');
+}
+
+function rooms(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			while (roomlist.hasChildNodes()) {
+				roomlist.removeChild(roomlist.lastChild);
+			}
+			for(it in JSON.parse(xmlhttp.responseText).items){
+				var lit = document.createElement("li");
+				lit.innerHTML = it.title;
+				document.getElementById("roomlist").appendChild(lit);
+			}
+		}
+	}
+	xmlhttp.open('GET','https://api.ciscospark.com/v1/rooms', true);
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send();
+
+}
+
+function newroom(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			var resp = JSON.parse(xmlhttp.responseText);
+			document.getElementById("text").setAttribute("roomid", JSON.parse(xmlhttp.responseText).id)
+			
+			var lit = document.createElement("li");
+			lit.innerHTML = resp.title;
+			document.getElementById("roomlist").appendChild(lit);
+		}
+	}
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/rooms', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"title" : "' + document.getElementById("text").value + '"}');
+}
+
+function invite(){
+	xmlhttp = new XMLHttpRequest();
+	/*xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+		
+		}
+	}*/
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/membership', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"roomId" : "' + document.getElementById("text").getAttribute("roomid") + '", "personEmail" : "' + document.getElementById("email").value + '", "isModerator" : "false"}');
+}
+</script>
+
+</head>
+<body>
+
+<input type="text" id="email"><br>
+<input type="text" id="text"><br>
+<button onclick="sendmsg()">send</button>
+<button onclick="people()">people</button>
+<button onclick="rooms()">rooms</button>
+<button onclick="newroom()">newroom</button>
+<button onclick="invite()">invite</button>
+<ul id="roomlist"><li>test</li></ul>
+
+</body>
+</html>

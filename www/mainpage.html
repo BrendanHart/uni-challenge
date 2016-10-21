@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/nav.css">
+        <title>Hello World</title>
+
+        <script type="text/javascript" src="cordova.js"></script>
+
+<script>
+var tokens = ["OGUyNGJiN2QtNGI3Ny00YzY1LWE0YjQtODQxZDc0OGQ4Yjc5ZTNiZjY4YjEtYTEx", "Zjk2OTk2MWYtMDg1ZC00NGI3LWIyMTAtMzFkZTQ2NDNkMzA5OWExZDdlMjUtNGUw", "NTYxZTljYzEtMzk2NC00YTgwLThkZWItM2FhZmQ0NzY0NzAxYWExNWEyOTAtNWU1"];
+var sender = 0;
+
+function sendmsg(){
+    document.getElementById("foundPerson").classList.add("hidden");
+	xmlhttp = new XMLHttpRequest();
+	/*xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+		
+		}
+	}*/
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/messages', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"toPersonEmail" : "' + document.getElementById("email").value + '" , "text" : "' + document.getElementById("text").value + '"}');
+}
+
+function people(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			var resp = JSON.parse(xmlhttp.responseText);
+			//TO DO: do something with resp (show)
+		}
+	}
+	xmlhttp.open('GET','https://api.ciscospark.com/v1/people', true);
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"max" : 10}');
+}
+
+function rooms(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			while (roomlist.hasChildNodes()) {
+				roomlist.removeChild(roomlist.lastChild);
+			}
+			for(it in JSON.parse(xmlhttp.responseText).items){
+				var lit = document.createElement("li");
+				lit.innerHTML = it.title;
+				document.getElementById("roomlist").appendChild(lit);
+			}
+		}
+	}
+	xmlhttp.open('GET','https://api.ciscospark.com/v1/rooms', true);
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send();
+
+}
+
+function newroom(){
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			var resp = JSON.parse(xmlhttp.responseText);
+			document.getElementById("text").setAttribute("roomid", JSON.parse(xmlhttp.responseText).id)
+			
+			var lit = document.createElement("li");
+			lit.innerHTML = resp.title;
+			document.getElementById("roomlist").appendChild(lit);
+		}
+	}
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/rooms', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"title" : "' + document.getElementById("text").value + '"}');
+}
+
+function invite(){
+	xmlhttp = new XMLHttpRequest();
+	/*xmlhttp.onreadystatechange = function () {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+		
+		}
+	}*/
+	xmlhttp.open('POST', 'https://api.ciscospark.com/v1/membership', true);
+	xmlhttp.setRequestHeader('Content-Type', 'application/json');
+	xmlhttp.setRequestHeader('Authorization', 'Bearer ' + tokens[sender]);
+	xmlhttp.send('{"roomId" : "' + document.getElementById("text").getAttribute("roomid") + '", "personEmail" : "' + document.getElementById("email").value + '", "isModerator" : "false"}');
+}
+</script>
+        <script type="text/javascript">
+        var map;
+        document.addEventListener("deviceready", function() {
+                var div = document.getElementById("map_canvas");
+                map = plugin.google.maps.Map.getMap(div);
+                map.addEventListener(plugin.google.maps.event.MAP_READY, onMapReady);
+            }, false);
+
+        function displayPerson(image, name) {
+            var div = document.getElementById("foundPerson");
+            var img = div.getElementById("img");
+            var span = div.getElementById("span");
+            img.src = image;
+            span.innerHTML=name;
+            div.height="50px"
+            div.appendChild(img);
+            div.className += "foundPerson";
+            document.appendChild(div);
+        }
+
+        function onMapReady() {
+
+                var POS = new plugin.google.maps.LatLng(52.4508168,-1.9327022);
+                map.animateCamera({
+                    'target': POS,
+                    'tilt': 60,
+                    'zoom': 18,
+                    'bearing': 0,
+                    'duration': 5000 // = 5 sec.
+                    }, function() {
+                    }
+                );
+
+                map.addCircle(
+                   {'center': POS,
+                    'radius': 300,
+                    'strokeColor' : '#AA00FF',
+                    'strokeWidth': 5,
+                    'fillColor' : '#efefef'
+                    });
+
+                map.addMarker(
+                    {'position': POS,
+                     'title': "John Smith",
+                     }, function(marker) {
+                        marker.addEventListener(plugin.google.maps.event.MARKER_CLICK, function() {
+                            displayPerson("img/profiles/johnsmith.jpg","John Smith");
+                            });
+                     });
+
+
+
+        }
+
+        function onBtnClicked() {
+            map.showDialog();
+        }
+        </script>
+
+
+    </head>
+    <body>
+            <!-- The map -->
+        <div style="width:100%;height:600px" id="map_canvas"></div>
+
+            <!-- Nearby
+            <section class="connections">
+                <div class="connection-title"><h1>Nearby</h1></div>
+                <div class="connection-list">
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                    <div class="connection"><img src="img/profiles/johnsmith.jpg"/> John Smith</div>
+                </div>
+            </section>-->
+
+        <div id="foundPerson">
+            <div style="display:inline-block;width:25%;text-align:center"><img src="img/profiles/johnsmith.jpg" style="width:70px;top:-25px;left:30px;;position:absolute;height:70px;border-radius:50%;" id="foundPersoni"/></div>
+            <div style="display:inline-block;width:74%;"><h2 id="foundPersonn" style="margin-left:10px;">John Smith</h2><p id="foundpersonin" style="margin-left:10px;">Interested in Computer Science</p></div>
+            <div style="text-align:center;margin:10px;"><input type="text" id="text" placeholder="Message..." /><input type="hidden" id="email" value="bxh538@student.bham.ac.uk" /><button style="border-radius:2px;background-color:#ededed;border:0;" onclick="sendmsg()">Send</button></div>
+        </div>
+            
+        <div class="notifications">
+            0 
+        </div>
+
+        <nav role="navigation">
+            <div id="menuToggle">
+                <input type="checkbox" />
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <ul id="menu">
+                    <a href="#"><li>Profile</li></a>
+                    <a href="#"><li>Settings</li></a>
+                    <a href="#"><li>Info</li></a>
+                    <a href="#"><li>Contact</li></a>
+                </ul>
+            </div>
+        </nav>
+    </body>
+</html>
