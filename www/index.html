@@ -10,24 +10,51 @@
 	<script>
 	function validate(){
 	
-		if(document.forms["login"]["username"].value == "admin" && document.forms["login"]["password"].value == "password"){
+		if(document.forms["login"]["username"].value == ""){
+
+			alert("You must fill the username field before continuing.");
+			setFocusTo("username");
+			return false;
+		}
+		else if(document.forms["login"]["password"].value == ""){
+
+			alert("You must fill the password field before continuing.");
+			setFocusTo("password");
+			return false;
+		}
+		else if(document.forms["login"]["username"].value == "admin" && document.forms["login"]["password"].value == "password"){
 	
 			return true;
 		}
 		else{
 	
-			alert("Wrong password or username");
+			alert("Incorrect password or username.");
 			return false;
 		}
 	}
 	</script>
+	<script>
+	function setFocusTo(_element){
+
+		document.forms["login"][_element].focus()
+	}
+	</script>
     </head>
-    <body>
-	<h2>Connection Application</h2>
-	<form name="login" method="post" action="mainpage.html"  onsubmit="return validate()">
-	<input type="text" name="username" required>Username</input>
-	<input type="password" name="password" required>Password</input>
-	<input type="submit" value="Log In">
-	</form>
+    <body background="background.png" background-position="bottom">
+	<div align="center">
+		<h1 class="title">CONNECTION<br/>APPLICATION</h1>
+	</div>
+
+	
+		<form name="login" method="post" action="mainpage.html"  onsubmit="return validate()">
+		<div align="center">
+		<input class="field" type="text" name="username" value="Username" onfocus="this.value='';">
+		<input class="field" type="password" name="password" value="Password" onfocus="this.value='';">
+		</div>
+		<div align="center">
+		<input class="button" type="submit" value="Log In">
+		</div>
+		</form>
+	
     </body>
 </html>
