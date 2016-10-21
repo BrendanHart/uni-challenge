@@ -22,6 +22,7 @@
 
             navigator.geolocation.getCurrentPosition(function(pos) {
             var POS = new plugin.google.maps.LatLng(pos.latitude, pos.longitude);
+            alert(POS);
             map.animateCamera({
                 'target': POS,
                 'tilt': 60,
